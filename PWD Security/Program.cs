@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -11,6 +11,8 @@ class Program
     static string assembly_pwd = "";
     static int result;
     static public int free_line = -1;
+    static bool user_exists = false;
+    static int user_id;
     static void Main(string[] args)
     {
         var rnd = new Random();
@@ -142,8 +144,70 @@ class Program
                     }
                 }
                 
-                break;// HOLY SHIT NEVER AGAIN
-            case 2:   // :(
+                break;
+            case 2:
+                Console.Clear();
+                Console.Write("Enter your username: ");
+                string trueinput_username = Console.ReadLine();
+                user_data = File.ReadAllLines(userdata_path);
+                string input_username = trueinput_username.ToLower();
+                for(int i = 0; i < 999; i++)
+                {
+                    if(input_username == user_data[i])
+                    {
+                        user_exists = true;
+                        user_id = i;
+                    }
+                }
+                if (user_exists)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Welcome back!");
+                    Console.WriteLine();
+                    Console.ResetColor();
+                    Console.Write("Please enter your password: ");
+                    string input_password = Console.ReadLine();
+                    Console.WriteLine();
+                    string user_salt = user_data[user_id + 2000];
+                    Console.WriteLine("This might take a while, please wait");
+                    string password_probe = CreateHash(input_password, userdata_path, user_salt);
+                    string password_saved = user_data[user_id + 1000];
+                    if (password_probe == password_saved)
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor= ConsoleColor.Green;
+                        Console.WriteLine("Sucess!");
+                        Console.ResetColor();
+                        Console.Write("Welcome back, ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine(trueinput_username);
+                        Console.ResetColor();
+                        Console.ReadKey();
+
+                    }
+                    else if(password_probe != password_saved)
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor= ConsoleColor.Red;
+                        Console.WriteLine("Password is not correct");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Internal error");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("User does not exist");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                }
+                
                 break;
             default:
                 Console.Clear ();
@@ -158,7 +222,7 @@ class Program
     static string GenerateRandomString(int length)
     {
         var rnd = new Random();
-        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"§$%&/()=,;.:-_<>@€+~*#'";
+        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         string return_string = "";
         for(int i = 0; i < length; i++)
         {
@@ -171,15 +235,19 @@ class Program
     static string CreateHash(string pwd, string path, string salt)
     {
         string[] userdata = File.ReadAllLines(path);
+        Thread.Sleep(1000);
         Console.Clear();
         pwd = salt + pwd;
         byte[] bytes = Encoding.UTF8.GetBytes(pwd);
+        Thread.Sleep(1000);
         string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
         if (hexString.Length > 8)
         {
+            Thread.Sleep(1000);
             hexString = hexString.Substring(0, 8);
         }
         ulong hexValue = Convert.ToUInt64(hexString, 16);
+        Thread.Sleep(1000);
         string hexValueString = Convert.ToString(hexValue);
         int max_length = 10;
         if (hexValueString.Length > 8)
@@ -192,6 +260,7 @@ class Program
         }
         for (int i = 0; i < max_length; i++)
         {
+            Thread.Sleep(30);
             int number = Convert.ToInt32(hexValueString[i]);
 
             try
@@ -205,6 +274,7 @@ class Program
             result = number * number2;
             assembly_pwd = assembly_pwd + Convert.ToString(result);
         }
+        Thread.Sleep(1000);
         return assembly_pwd;
     }
 }
