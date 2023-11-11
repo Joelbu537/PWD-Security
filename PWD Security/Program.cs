@@ -1,3 +1,4 @@
+//Made by Joelbu
 using System.IO;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -248,6 +249,7 @@ class Program
         }
         ulong hexValue = Convert.ToUInt64(hexString, 16);
         Thread.Sleep(1000);
+        //Made by Joelbu
         string hexValueString = Convert.ToString(hexValue);
         int max_length = 10;
         if (hexValueString.Length > 8)
