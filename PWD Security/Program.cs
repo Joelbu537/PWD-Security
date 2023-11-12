@@ -1,10 +1,10 @@
-//Made by Joelbu
 using System.IO;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
+    public static bool debug = false;
     static public string userdata_path = null;
     static public string[] user_data;
     static public bool user_data_available = false;
@@ -16,9 +16,16 @@ class Program
     static int user_id;
     static void Main(string[] args)
     {
+        string current_path;
         var rnd = new Random();
-        string current_path = Directory.GetCurrentDirectory(); //Release
-        //string current_path = "E:\\C#testing\\pwd_security\\";  //DEBUG
+        if (debug)
+        {
+            current_path = "E:\\C#testing\\pwd_security\\";  //DEBUG
+        }
+        else
+        {
+            current_path = Directory.GetCurrentDirectory(); //Release
+        }
         try
         {
             userdata_path = Path.Combine(current_path, "data\\user_data.bin");
@@ -108,7 +115,7 @@ class Program
                                     {
                                         user_data[free_line] = created_username; //Name
                                         string salt = GenerateRandomString(4);
-                                        user_data[2000 + free_line] = GenerateRandomString(10); //Salt
+                                        user_data[2000 + free_line] = salt; //Salt
                                         user_data[1000 + free_line] = CreateHash(created_password, userdata_path, salt); //Hash PWD
                                         sucesscode++;
                                         Console.Clear();
@@ -170,9 +177,19 @@ class Program
                     string input_password = Console.ReadLine();
                     Console.WriteLine();
                     string user_salt = user_data[user_id + 2000];
-                    Console.WriteLine("This might take a while, please wait");
                     string password_probe = CreateHash(input_password, userdata_path, user_salt);
                     string password_saved = user_data[user_id + 1000];
+                    if (debug)
+                    {
+                        Console.WriteLine("User_Salt: " + user_salt);
+                        Console.WriteLine("User saved_pwd: " + password_saved);
+                        Console.WriteLine("User input_pwd: " + password_probe);
+                        if(password_probe == password_saved)
+                        {
+                            Console.WriteLine("The passwords match");
+                        }
+                        Console.ReadKey();
+                    }
                     if (password_probe == password_saved)
                     {
                         Console.Clear();
@@ -238,10 +255,20 @@ class Program
         string[] userdata = File.ReadAllLines(path);
         Thread.Sleep(1000);
         Console.Clear();
+        if (debug)
+        {
+            Console.WriteLine("Password: " + pwd);
+            Console.WriteLine("Salt: " + salt);
+            Console.WriteLine("Combinde: " + salt + pwd);
+        }
         pwd = salt + pwd;
         byte[] bytes = Encoding.UTF8.GetBytes(pwd);
         Thread.Sleep(1000);
         string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
+        if (debug)
+        {
+            Console.WriteLine("Combined HEX: " + hexString);
+        }
         if (hexString.Length > 8)
         {
             Thread.Sleep(1000);
@@ -249,7 +276,6 @@ class Program
         }
         ulong hexValue = Convert.ToUInt64(hexString, 16);
         Thread.Sleep(1000);
-        //Made by Joelbu
         string hexValueString = Convert.ToString(hexValue);
         int max_length = 10;
         if (hexValueString.Length > 8)
@@ -275,6 +301,11 @@ class Program
             }
             result = number * number2;
             assembly_pwd = assembly_pwd + Convert.ToString(result);
+        }
+        if(debug)
+        {
+            Console.WriteLine("Result: " + assembly_pwd);
+            Console.ReadKey();
         }
         Thread.Sleep(1000);
         return assembly_pwd;
