@@ -241,7 +241,7 @@ class Program
     static string GenerateRandomString(int length)
     {
         var rnd = new Random();
-        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"§$%&/()=ß?{[]}\+*~#'";
         string return_string = "";
         for(int i = 0; i < length; i++)
         {
