@@ -4,6 +4,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
+    static public int[] pwd_array = new int[100]
     public static bool debug = false;
     static public string userdata_path = null;
     static public string[] user_data;
@@ -249,7 +250,6 @@ class Program
         }
         return return_string;
     }
-
     static string CreateHash(string pwd, string path, string salt)
     {
         string[] userdata = File.ReadAllLines(path);
@@ -259,28 +259,26 @@ class Program
         {
             Console.WriteLine("Password: " + pwd);
             Console.WriteLine("Salt: " + salt);
-            Console.WriteLine("Combinde: " + salt + pwd);
+            Console.WriteLine("Combined: " + salt + pwd);
         }
         pwd = salt + pwd;
         byte[] bytes = Encoding.UTF8.GetBytes(pwd);
-        Thread.Sleep(1000);
         string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
         if (debug)
         {
             Console.WriteLine("Combined HEX: " + hexString);
         }
-        if (hexString.Length > 8)
+        if (hexString.Length > 30)
         {
             Thread.Sleep(1000);
-            hexString = hexString.Substring(0, 8);
+            hexString = hexString.Substring(0, 30);
         }
-        ulong hexValue = Convert.ToUInt64(hexString, 16);
-        Thread.Sleep(1000);
+        Thread.Sleep(800);
         string hexValueString = Convert.ToString(hexValue);
-        int max_length = 10;
-        if (hexValueString.Length > 8)
+        int max_length = 30;
+        if (hexValueString.Length > 30)
         {
-            max_length = 8;
+            max_length = 30;
         }
         else
         {
@@ -299,15 +297,24 @@ class Program
             {
 
             }
-            result = number * number2;
-            assembly_pwd = assembly_pwd + Convert.ToString(result);
+            pwd_array[i] = number * number2;
         }
         if(debug)
         {
-            Console.WriteLine("Result: " + assembly_pwd);
+            Console.Write("Result: ");
+			for(int i = 0; i < pwd_array.Length; i++)
+			{
+			    Console.Write(pwd_array[i]);
+			}
+			Console.WriteLine();
             Console.ReadKey();
+			Thread.Sleep(750);
         }
-        Thread.Sleep(1000);
-        return assembly_pwd;
+		string assembly_pwd;
+		for(int i = 0; i < pwd_array.Length; i++)
+		{
+		    assembly_pwd += Convert.ToString(pwd_array[i]);
+		}
+		return assembly_pwd;
     }
 }
