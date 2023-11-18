@@ -80,13 +80,14 @@ class Program
                 {
                     Console.Clear();
                     Console.Write("Enter username: ");
-                    string created_username = Console.ReadLine().ToLower();
+                    string real_created_username = Console.ReadLine();
+                    string created_username = real_created_username.ToLower();
                     Console.WriteLine();
-                    Console.Write("Enter password: ");
-                    string created_password = Console.ReadLine();
+                    string enterText1 = "Enter password: ";
+                    string created_password = CheckPassword(enterText1);
                     Console.WriteLine();
-                    Console.Write("Confirm password: ");   //Password verbergen mit *
-                    string created_password_confirm = Console.ReadLine(); //Auch mit * verbergen...
+                    string enterText2 = "Confirm password: ";
+                    string created_password_confirm = CheckPassword(enterText2);
                     Console.Clear();
                     bool created_username_available = true;
                     for (int i = 0; i <= 999; i++)
@@ -115,7 +116,7 @@ class Program
                                 {
                                     try
                                     {
-                                        user_data[free_line] = created_username; //Name
+                                        user_data[free_line] = real_created_username; //Name
                                         string salt = GenerateRandomString(4);
                                         user_data[2000 + free_line] = salt; //Salt
                                         user_data[1000 + free_line] = CreateHash(created_password, userdata_path, salt); //Hash PWD
@@ -123,6 +124,11 @@ class Program
                                         Console.Clear();
                                         Console.ForegroundColor = ConsoleColor.Green;
                                         Console.WriteLine("Success!");
+                                        Console.ResetColor();
+                                        Console.Write("Welcome, ");
+                                        Console.ResetColor();
+                                        Console.ForegroundColor= ConsoleColor.Green;
+                                        Console.WriteLine(real_created_username);
                                         Console.ResetColor();
                                         Console.WriteLine("Restart program to sign in");
                                         Console.ReadKey();
@@ -170,7 +176,7 @@ class Program
                 string input_username = trueinput_username.ToLower();
                 for (int i = 0; i < 999; i++)
                 {
-                    if (input_username == user_data[i])
+                    if (input_username == user_data[i].ToLower())
                     {
                         user_exists = true;
                         user_id = i;
@@ -182,8 +188,8 @@ class Program
                     Console.WriteLine("Welcome back!");
                     Console.WriteLine();
                     Console.ResetColor();
-                    Console.Write("Please enter your password: ");
-                    string input_password = Console.ReadLine(); //Hiden *
+                    string enterText = "Please enter password: ";
+                    string input_password = CheckPassword(enterText);
                     Console.WriteLine();
                     string user_salt = user_data[user_id + 2000];
                     string password_probe = CreateHash(input_password, userdata_path, user_salt);
@@ -207,7 +213,7 @@ class Program
                         Console.ResetColor();
                         Console.Write("Welcome back, ");
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(trueinput_username);
+                        Console.WriteLine(user_data[user_id]);
                         Console.ResetColor();
                         Console.ReadKey();
 
@@ -324,5 +330,51 @@ class Program
             assembly_pwd += Convert.ToString(pwd_array[i]);
         }
         return assembly_pwd;
+    }
+    static string CheckPassword(string EnterText)
+    {
+        string EnteredVal = "";
+        try
+        {
+            Console.Write(EnterText);
+            EnteredVal = "";
+            do
+            {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                {
+                    EnteredVal += key.KeyChar;
+                    Console.Write("*");
+                }
+                else
+                {
+                    if (key.Key == ConsoleKey.Backspace && EnteredVal.Length > 0)
+                    {
+                        EnteredVal = EnteredVal.Substring(0, (EnteredVal.Length - 1));
+                        Console.Write("\b \b");
+                    }
+                    else if (key.Key == ConsoleKey.Enter)
+                    {
+                        if (string.IsNullOrWhiteSpace(EnteredVal))
+                        {
+                            Console.WriteLine("");
+                            Console.WriteLine("Empty value not allowed.");
+                            CheckPassword(EnterText);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("");
+                            break;
+                        }
+                    }
+                }
+            } while (true);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return EnteredVal;
     }
 }
