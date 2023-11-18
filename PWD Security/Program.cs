@@ -85,8 +85,8 @@ class Program
                     Console.Write("Enter password: ");
                     string created_password = Console.ReadLine();
                     Console.WriteLine();
-                    Console.Write("Confirm password: ");
-                    string created_password_confirm = Console.ReadLine();
+                    Console.Write("Confirm password: ");   //Password verbergen mit *
+                    string created_password_confirm = Console.ReadLine(); //Auch mit * verbergen...
                     Console.Clear();
                     bool created_username_available = true;
                     for (int i = 0; i <= 999; i++)
@@ -183,7 +183,7 @@ class Program
                     Console.WriteLine();
                     Console.ResetColor();
                     Console.Write("Please enter your password: ");
-                    string input_password = Console.ReadLine();
+                    string input_password = Console.ReadLine(); //Hiden *
                     Console.WriteLine();
                     string user_salt = user_data[user_id + 2000];
                     string password_probe = CreateHash(input_password, userdata_path, user_salt);
