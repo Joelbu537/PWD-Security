@@ -4,8 +4,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
-    static public int[] pwd_array = new int[100]
-    public static bool debug = false;
+    public static bool debug = true; //DEBUG
+
+    static public int[] pwd_array = new int[100];
     static public string userdata_path = null;
     static public string[] user_data;
     static public bool user_data_available = false;
@@ -45,7 +46,7 @@ class Program
                 user_data = File.ReadAllLines(userdata_path);
                 user_data_available = true;
             }
-            
+
         }
         catch (Exception ex)
         {
@@ -71,7 +72,7 @@ class Program
                 }
             }
         }
-        switch(key_action)
+        switch (key_action)
         {
             case 1:
                 int sucesscode = 0;
@@ -150,9 +151,16 @@ class Program
                                 }
                             }
                         }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Passwords don't match");
+                            Console.ResetColor();
+                            Console.ReadKey();
+                        }
                     }
                 }
-                
+
                 break;
             case 2:
                 Console.Clear();
@@ -160,9 +168,9 @@ class Program
                 string trueinput_username = Console.ReadLine();
                 user_data = File.ReadAllLines(userdata_path);
                 string input_username = trueinput_username.ToLower();
-                for(int i = 0; i < 999; i++)
+                for (int i = 0; i < 999; i++)
                 {
-                    if(input_username == user_data[i])
+                    if (input_username == user_data[i])
                     {
                         user_exists = true;
                         user_id = i;
@@ -185,7 +193,7 @@ class Program
                         Console.WriteLine("User_Salt: " + user_salt);
                         Console.WriteLine("User saved_pwd: " + password_saved);
                         Console.WriteLine("User input_pwd: " + password_probe);
-                        if(password_probe == password_saved)
+                        if (password_probe == password_saved)
                         {
                             Console.WriteLine("The passwords match");
                         }
@@ -194,7 +202,7 @@ class Program
                     if (password_probe == password_saved)
                     {
                         Console.Clear();
-                        Console.ForegroundColor= ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Sucess!");
                         Console.ResetColor();
                         Console.Write("Welcome back, ");
@@ -204,10 +212,10 @@ class Program
                         Console.ReadKey();
 
                     }
-                    else if(password_probe != password_saved)
+                    else if (password_probe != password_saved)
                     {
                         Console.Clear();
-                        Console.ForegroundColor= ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Password is not correct");
                         Console.ResetColor();
                         Console.ReadKey();
@@ -226,13 +234,13 @@ class Program
                     Console.ResetColor();
                     Console.ReadKey();
                 }
-                
+
                 break;
             default:
-                Console.Clear ();
+                Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Critical error");
-                Console.ResetColor ();
+                Console.ResetColor();
                 Thread.Sleep(5000);
                 break;
         }
@@ -241,9 +249,9 @@ class Program
     static string GenerateRandomString(int length)
     {
         var rnd = new Random();
-        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"§$%&/()=ß?{[]}\+*~#'";
+        string characters = "abcdefgjijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$% &/ () = ß ?{ []}\\+*~#";
         string return_string = "";
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
             char randomchar = characters[rnd.Next(0, characters.Length)];
             return_string += randomchar;
@@ -274,7 +282,7 @@ class Program
             hexString = hexString.Substring(0, 30);
         }
         Thread.Sleep(800);
-        string hexValueString = Convert.ToString(hexValue);
+        string hexValueString = Convert.ToString(hexString);
         int max_length = 30;
         if (hexValueString.Length > 30)
         {
@@ -299,22 +307,22 @@ class Program
             }
             pwd_array[i] = number * number2;
         }
-        if(debug)
+        if (debug)
         {
             Console.Write("Result: ");
-			for(int i = 0; i < pwd_array.Length; i++)
-			{
-			    Console.Write(pwd_array[i]);
-			}
-			Console.WriteLine();
+            for (int i = 0; i < pwd_array.Length; i++)
+            {
+                Console.Write(pwd_array[i]);
+            }
+            Console.WriteLine();
             Console.ReadKey();
-			Thread.Sleep(750);
+            Thread.Sleep(750);
         }
-		string assembly_pwd;
-		for(int i = 0; i < pwd_array.Length; i++)
-		{
-		    assembly_pwd += Convert.ToString(pwd_array[i]);
-		}
-		return assembly_pwd;
+        string assembly_pwd = "";
+        for (int i = 0; i < pwd_array.Length; i++)
+        {
+            assembly_pwd += Convert.ToString(pwd_array[i]);
+        }
+        return assembly_pwd;
     }
 }
