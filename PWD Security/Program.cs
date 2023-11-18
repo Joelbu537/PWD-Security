@@ -4,7 +4,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
-    public static bool debug = true; //DEBUG
+    public static bool debug = false; //DEBUG
 
     static public int[] pwd_array = new int[100];
     static public string userdata_path = null;
