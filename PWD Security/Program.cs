@@ -18,6 +18,7 @@ class Program
     static int user_id;
     static void Main(string[] args)
     {
+        Console.Title("PWD Security");
         string current_path;
         var rnd = new Random();
         if (debug)
