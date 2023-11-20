@@ -7,6 +7,7 @@ class Program
     public static bool debug = false; //DEBUG
 
     static public int[] pwd_array = new int[100];
+    static public float version = 2.2
     static public string userdata_path = null;
     static public string[] user_data;
     static public bool user_data_available = false;
