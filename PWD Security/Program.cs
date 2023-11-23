@@ -18,7 +18,7 @@ class Program
     static int user_id;
     static void Main(string[] args)
     {
-        Console.Title("PWD Security");
+        Console.Title = "PWD Security";
         string current_path;
         var rnd = new Random();
         if (debug)
@@ -128,7 +128,7 @@ class Program
                                         Console.ResetColor();
                                         Console.Write("Welcome, ");
                                         Console.ResetColor();
-                                        Console.ForegroundColor= ConsoleColor.Green;
+                                        Console.ForegroundColor = ConsoleColor.Green;
                                         Console.WriteLine(real_created_username);
                                         Console.ResetColor();
                                         Console.WriteLine("Restart program to sign in");
