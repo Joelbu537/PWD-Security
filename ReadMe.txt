@@ -11,6 +11,5 @@ Features/explanation:
  - Passwords are never displayed in plaintext, the shown characters are replaced by *'s.
  - I made the program pretty idiot-secure so you can't log into accounts that don't exist or just use the first half of a password to trick the algorithm into thinking its the true password
    (This was an actual bug where the program would only check the first character of the pwd and then REPLACE the stored hash with this FUCKING CHARACTER. which of course made the account unaccesable
-    because the stored character would be converted into ASCII stuff that doesnt exist...)
  - It's console based yay:D
- - The ammount of saved accounts is capped at 1000 because I was too lazy to use different files or some other strategy change it yourself or shut up thanks goodbye
+ - The ammount of saved accounts is capped at 1000 because I was too lazy to use different files or some other strategy change it yourself
